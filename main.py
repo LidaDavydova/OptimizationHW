@@ -1,9 +1,9 @@
 from SimplexMethod import Simplex
 
 def main():
-    C = [9, 10, 16]
-    A = [[18, 15, 12], [6, 4, 8], [5, 3, 3]]
-    b = [360, 192, 180]
+    C = [2, -2, 6]
+    A = [[2, 1, -2], [1, 2, 4], [1, -1, 2]]
+    b = [24,23,10]
     e = 0.0001
     model = Simplex(C, A, b, e)
     C = model.simplex()
