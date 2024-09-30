@@ -24,3 +24,6 @@ def devide_row(A, row, devider):
     for i in range(len(A[row])):
         A[row][i] /= devider
     return A
+
+def identity_matrix(size):
+    return [[1 if i == j else 0 for j in range(size)] for i in range(size)]

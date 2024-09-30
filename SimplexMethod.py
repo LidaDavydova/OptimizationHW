@@ -10,17 +10,20 @@ class Simplex:
         self.A = A
         self.b = b
         self.e = e
-        self.z = 0
+        
+        size = len(A)
+        idenntity = identity_matrix(size)
+        for i in range(size):
+            A[i].extend(idenntity[i])
 
     def min_col_C(self) -> int:
-        # here check for min < e => stop ?????????
         return self.C.index(min(self.C))
 
     def pivot(self, col_i) -> tuple:
         A = self.A
         b = self.b
         
-        for i in range(self.A_rows):
+        for i in range(len(A)):
             b[i] /= A[i][col_i]
         
         return (b.index(min(b)), col_i)
@@ -32,6 +35,7 @@ class Simplex:
         C = self.C
         while min(self.C) < 0:
             row_i, col_i = self.pivot(self.min_col_C())
+            print(col_i)
 
             # perfome
             
@@ -47,4 +51,5 @@ class Simplex:
             # update C - vector
             C[row_i] /= pivot
             C = nullify_col(C, row=A[row_i], p_col=col_i)
+        return b
 
