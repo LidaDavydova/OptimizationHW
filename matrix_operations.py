@@ -3,6 +3,8 @@
 def nullify_col_inside(A, p_row: int, p_col):
     n_rows = len(A)
     for i in range(n_rows):
+        if i == p_row:
+            continue
         mltp = A[i][p_col]
         for j in range(len(A[i])):
             if j != p_col:
