@@ -8,6 +8,7 @@ def main():
     model = Simplex(C, A, b, e)
     C = model.simplex()
     print(C)
+    print("Max value of function: ", C[-1])
 
 
 if __name__ == '__main__':

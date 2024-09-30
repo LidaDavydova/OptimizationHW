@@ -50,8 +50,5 @@ class Simplex:
             self.M = devide_row(self.M, row_i, pivot)
             self.M = nullify_col_inside(self.M, p_row=row_i, p_col=col_i)
 
-            print(self.M)
-            break
-
         return self.M[0] # C row
 
