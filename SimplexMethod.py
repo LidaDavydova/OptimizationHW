@@ -5,6 +5,7 @@ from matrix_operations import *
 class Simplex:
     def __init__(self, C, A, b, e):
         self.len_vars = len(C)
+        self.e = e
 
         C = [-c for c in C]
         
@@ -22,31 +23,56 @@ class Simplex:
 
         self.M = M
 
-    def min_col_C(self) -> int:
-        C = self.M[0][:self.len_vars]
-        return C.index(min(C))
+    def min_col_C(self) -> tuple:
+        C = self.M[0][:-1]
+        mn = 0
+        mn_i = -1
+        for i in range(len(C)):
+            if C[i] < mn and C[i] < -self.e:
+                mn = C[i]
+                mn_i = i
+        return (mn, mn_i)
 
     def pivot(self, col_i) -> tuple:
         A = self.M[1:]
         b = [i[-1] for i in self.M[1:]] # exclude solution for C (z)
-        mn_i = 0
-        mn = -1
+        mn_i = -1
+        mn = float('inf')
         
         for i in range(len(A)):
-            try:
-                b[i] /= A[i][col_i]
-            except ZeroDivisionError:
-                b[i] = -1
-            if b[i] > 0 and (mn == -1 or b[i] < mn):
-                mn = b[i]
-                mn_i = i
+            # try:
+            #     b[i] /= A[i][col_i]
+            # except ZeroDivisionError:
+            #     b[i] = -1
+            # if b[i] > 0 and (mn == -1 or b[i] < mn):
+            #     mn = b[i]
+            #     mn_i = i
+
+            if A[i][col_i] > self.e:
+                ratio = b[i] / A[i][col_i]
+                if ratio < mn - self.e: 
+                    mn = ratio
+                    mn_i = i
+                elif abs(ratio - mn) < self.e and i < mn_i:  
+                    mn_i = i
+
+        if mn_i == -1:
+            return (-1, -1) # no solution
 
         return (mn_i+1, col_i)
 
 
     def simplex(self):
-        while min(self.M[0][:-1]) < 0:
-            row_i, col_i = self.pivot(self.min_col_C())
+        mn, mn_col = self.min_col_C()
+        z = -1
+        n = 0
+        while mn < -self.e and z != self.M[0][-1]:
+            z = self.M[0][-1]
+
+            row_i, col_i = self.pivot(mn_col)
+
+            if (row_i, col_i) == (-1, -1):
+                return None
 
             # perfome
             
@@ -54,6 +80,8 @@ class Simplex:
             # update A - matrix
             self.M = devide_row(self.M, row_i, pivot)
             self.M = nullify_col_inside(self.M, p_row=row_i, p_col=col_i)
+
+            mn, mn_col = self.min_col_C()
 
         res = [row[-1] for row in self.M]
         return res # solution column

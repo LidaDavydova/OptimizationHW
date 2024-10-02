@@ -18,8 +18,9 @@ def test_cases():
         model = Simplex(C, A, b, e)
         result = model.simplex()
         if result:
-            print("Decision variables (x*):", result[:-len(A)])  # excluding slack variables
-            print("Maximum value of the objective function: ", -result[-1])  # negate to get the max value
+            print(result)
+            # print("Decision variables (x*):", result[:-len(A)])  # excluding slack variables
+            print("Maximum value of the objective function: ", result[0]) # z
         else:
             print("The method is not applicable!")
 
