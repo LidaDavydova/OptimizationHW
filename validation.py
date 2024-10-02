@@ -15,11 +15,15 @@ def is_non_negative_number(value):
 
 
 def validate_input(C, A, b, accuracy, num_of_decision_var):
+    # Validate approximation accuracy
+    if not is_number(accuracy) or accuracy <= 0:
+        return False
+    
     # Validate C
     if not isinstance(C, list) or not C or len(C) != num_of_decision_var:
         return False
     for i in enumerate(C):
-        if not is_number(i):
+        if not is_number(i) or i < accuracy:
             return False
 
     # Validate if A and b are of equal size
@@ -30,7 +34,7 @@ def validate_input(C, A, b, accuracy, num_of_decision_var):
     if not isinstance(b, list) or not b:
         return False
     for i in enumerate(b):
-        if not is_non_negative_number(i):
+        if not is_non_negative_number(i) or i < accuracy:
             return False
 
     # Validate A
@@ -42,11 +46,7 @@ def validate_input(C, A, b, accuracy, num_of_decision_var):
         if len(row) != num_of_decision_var:
             return False,
         for col_idx, elem in enumerate(row):
-            if not is_number(elem):
+            if not is_number(elem) or elem < accuracy:
                 return False
-
-    # Validate approximation accuracy
-    if not is_number(accuracy) or accuracy <= 0:
-        return False
 
     return True
