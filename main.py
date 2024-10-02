@@ -1,4 +1,5 @@
 from SimplexMethod import Simplex
+from validation import validate_input
 
 def main():
     num_of_decision_var = 2
@@ -20,7 +21,7 @@ def main():
     print("Enter the approximation accuracy (e.g., 0.0001):")
     e = float(input().strip())
     
-    if not validate_input(C, A, b, accuracy, num_of_decision_var):
+    if not validate_input(C, A, b, e, num_of_decision_var):
         print("The method is not applicable!")
 
     # Create the Simplex model and solve the linear program

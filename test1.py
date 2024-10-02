@@ -1,6 +1,9 @@
 
 
 # Test cases
+from SimplexMethod import Simplex
+
+
 def test_cases():
     test_data = [
         ([3, 5], [[1, 0], [0, 2], [3, 2]], [4, 12, 18], 0.0001),
