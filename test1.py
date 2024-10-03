@@ -3,7 +3,6 @@
 # Test cases
 from SimplexMethod import Simplex
 
-
 def test_cases():
     test_data = [
         ([3, 5], [[1, 0], [0, 2], [3, 2]], [4, 12, 18], 0.0001),
@@ -17,9 +16,16 @@ def test_cases():
         print(f"\nTest Case {i + 1}:")
         model = Simplex(C, A, b, e)
         result = model.simplex()
+        correct_result = ...
         if result:
             print("Decision variables (x*):", result[:-len(A)])  # excluding slack variables
-            print("Maximum value of the objective function: ", -result[-1])  # negate to get the max value
+            print("Maximum value of the objective function: ", result[-1]) # z
+
+            if correct_result[i] == result:
+                print("Test passed!")
+            else:
+                print("Test failed!")
+                print(f"Expected: {correct_result[i]}")
         else:
             print("The method is not applicable!")
 
