@@ -18,8 +18,8 @@ def validate_input(C, A, b, accuracy, num_of_decision_var):
     # Validate C
     if not isinstance(C, list) or not C or len(C) != num_of_decision_var:
         return False
-    for i in enumerate(C):
-        if not is_number(i):
+    for i, n in enumerate(C):
+        if not is_number(n):
             return False
 
     # Validate if A and b are of equal size
@@ -29,8 +29,8 @@ def validate_input(C, A, b, accuracy, num_of_decision_var):
     # Validate b
     if not isinstance(b, list) or not b:
         return False
-    for i in enumerate(b):
-        if not is_non_negative_number(i):
+    for i, n in enumerate(b):
+        if not is_non_negative_number(n):
             return False
 
     # Validate A

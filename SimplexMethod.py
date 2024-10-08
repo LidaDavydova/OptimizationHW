@@ -6,7 +6,10 @@ class Simplex:
     def __init__(self, C, A, b, e):
         self.len_vars = len(C)
         self.e = e
-        solution = [['z',0],['x1',b[1]],['x2',b[2]],['s',0]]
+        solution = [['z',0],
+                    ['s',b[0]],
+                    ['s',b[1]],
+                    ['s',b[2]]]
         C = [-c for c in C]
         
         size = len(A)
@@ -86,6 +89,8 @@ class Simplex:
                 var = 'x1'
             elif col_i == 1:
                 var = 'x2'
+            elif col_i == 2:
+                var = 'x3'
             else:
                 var = 's'
             
@@ -94,9 +99,13 @@ class Simplex:
                     self.solution[i] = ['s',0]
                     break
             self.solution[row_i] = [var, self.M[row_i][-1]]
-            
+
             mn, mn_col = self.min_col_C()
+        
+        for i in range(len(self.solution)):
+            self.solution[i][1] = self.M[i][-1]
         self.solution.append(['ans', self.M[0][-1]])
+        
         # res = [row[-1] for row in self.M]
         # return res # solution column
         return self.solution 

@@ -2,7 +2,7 @@ from SimplexMethod import Simplex
 from validation import validate_input
 
 def main():
-    num_of_decision_var = 2
+    num_of_decision_var = 3
     # User input for the linear program
     print("Enter coefficients of the objective function (C) separated by space:")
     C = list(map(float, input().strip().split()))
