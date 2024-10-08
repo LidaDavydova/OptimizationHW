@@ -29,11 +29,22 @@ def main():
     result = model.simplex()
     
     # Print results
+    x1,x2,ans = 0,0,0
     if result:
-        print("Decision variables (x*):", result[:-len(A)])  # excluding slack variables
-        print("Maximum value of the objective function: ", -result[-1])  # negate to get the max value
+        for j in range(len(result)):
+            if result[j][0] == 'x1':
+                x1 = result[j][1]
+            elif result[j][0] == 'x2':
+                x2 = result[j][1]
+            elif result[j][0] == 'ans':
+                ans = result[j][1]
+        
+        print('x1: ' + str(round(x1, 4)) + '\n' +
+                'x2: ' + str(round(x2, 4)) + '\n' +
+                'solution: '+ str(round(ans, 4))
+                )
     else:
-        print("The method is not applicable!")
+        print("an error occured")
 
 
 if __name__ == '__main__':

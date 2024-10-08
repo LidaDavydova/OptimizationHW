@@ -5,13 +5,10 @@ from matrix_operations import *
 class Simplex:
     def __init__(self, C, A, b, e):
         self.len_vars = len(C)
-<<<<<<< HEAD
-=======
         self.e = e
-
->>>>>>> 9845950c7a9f81ee1e57484ff46e87aad86eb9ee
+        solution = [['z',0],['x1',b[1]],['x2',b[2]],['s',0]]
         C = [-c for c in C]
-        solution = dict(x1=A[0][2],x2=A[1][2],ans=C[2]) #dictionary for soliutions that we are going to return 
+        
         size = len(A)
         identity = identity_matrix(size)
         for i in range(size):
@@ -19,14 +16,13 @@ class Simplex:
             C.append(0)
 
         C += [0] # solution for C (z)
-        C = ['z'] + C #append name for row
         M = []
         M.append(C)
         for i in range(size):
-            M.append(['x' + str(i+1)] + A[i] + [b[i]]) 
+            M.append(A[i] + [b[i]])
 
         self.M = M
-        self.solution = solution 
+        self.solution = solution
 
     def min_col_C(self) -> tuple:
         C = self.M[0][:-1]
@@ -70,7 +66,7 @@ class Simplex:
     def simplex(self):
         mn, mn_col = self.min_col_C()
         z = -1
-        n = 0
+        # n = 0
         while mn < -self.e and z != self.M[0][-1]:
             z = self.M[0][-1]
 
@@ -85,29 +81,22 @@ class Simplex:
             # update A - matrix
             self.M = devide_row(self.M, row_i, pivot)
             self.M = nullify_col_inside(self.M, p_row=row_i, p_col=col_i)
-<<<<<<< HEAD
-            if self.M[row_i][0] == 'x1':
-                self.solution.update({'x1':0})
-                self.M[row_i][0] = 's'
-            elif self.M[row_i][0] == 'x2':
-                self.solution.update({'x2':0})
-                self.M[row_i][0] = 's'
-            elif self.M[row_i][0] == 's':
-                if col_i == 1:
-                    self.solution.update({'x1':self.A[row_i][-1]})
-                    self.M[row_i][0] = 'x1'
-                elif col_i == 2:
-                    self.solution.update({'x2':self.A[row_i][-1]})
-                    self.M[row_i][0] = 'x2'
-            print(self.M)
-            self.solution.update({'ans':self.M[0][-1]})
-        # return self.M[0] # C row
-        return self.solution
-=======
 
+            if col_i == 0:
+                var = 'x1'
+            elif col_i == 1:
+                var = 'x2'
+            else:
+                var = 's'
+            
+            for i in range(len(self.solution)):
+                if self.solution[i][0] == var:
+                    self.solution[i] = ['s',0]
+                    break
+            self.solution[row_i] = [var, self.M[row_i][-1]]
+            
             mn, mn_col = self.min_col_C()
-
-        res = [row[-1] for row in self.M]
-        return res # solution column
->>>>>>> 9845950c7a9f81ee1e57484ff46e87aad86eb9ee
-
+        self.solution.append(['ans', self.M[0][-1]])
+        # res = [row[-1] for row in self.M]
+        # return res # solution column
+        return self.solution 
