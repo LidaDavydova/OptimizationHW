@@ -40,7 +40,7 @@ def test_cases():
         #     print("The method is not applicable!")
         # print(result)
         x1, x2, x3, ans = 0,0,0,0
-        e = 4
+        e = len(str(e).split(".")[1])
         if result:
             for j in range(len(result)):
                 if result[j][0] == 'x1':
