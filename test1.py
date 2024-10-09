@@ -52,8 +52,8 @@ def test_cases():
                 elif result[j][0] == 'ans':
                     ans = result[j][1]
             
-            print("Decision variables (x*):", round(x1, e), round(x2, e), round(x3, e))  # excluding slack variables
-            print("Maximum value of the objective function: ", round(ans, e)) # z
+            print(f"A vector of decision variables - ({round(x1, e)}, {round(x2, e)}, {round(x3, e)}).")  # excluding slack variables
+            print(f"Maximum value of the objective function: {round(ans, e)}.") # z
 
         else:
             print("The method is not applicable!")

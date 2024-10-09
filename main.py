@@ -20,6 +20,13 @@ def main():
     
     print("Enter the approximation accuracy (e.g., 0.0001):")
     e = float(input().strip())
+
+    # Print problem
+    print(f"Max z = {C[0]} * x1 + {C[1]} * x2 + {C[2]} * x3")
+    print("Subject to the constraints:")
+    print(f"{A[0][0]} * x1 + {A[0][1]} * x2 + {A[0][2]} * x3 <= {b[0]}")
+    print(f"{A[1][0]} * x1 + {A[1][1]} * x2 + {A[1][2]} * x3 <= {b[1]}")
+    print(f"{A[2][0]} * x1 + {A[2][1]} * x2 + {A[2][2]} * x3 <= {b[2]}")
     
     if not validate_input(C, A, b, e, num_of_decision_var):
         print("The method is not applicable!")
@@ -41,9 +48,9 @@ def main():
                 x3 = result[j][1]
             elif result[j][0] == 'ans':
                 ans = result[j][1]
-        
-        print("Decision variables (x*):", round(x1, e), round(x2, e), round(x3, e))  # excluding slack variables
-        print("Maximum value of the objective function: ", round(ans, e)) # z
+       
+        print(f"A vector of decision variables - ({round(x1, e)}, {round(x2, e)}, {round(x3, e)}).")  # excluding slack variables
+        print(f"Maximum value of the objective function: {round(ans, e)}.") # z
 
     else:
         print("The method is not applicable!")
