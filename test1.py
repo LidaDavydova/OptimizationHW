@@ -26,19 +26,7 @@ def test_cases():
             continue
         model = Simplex(C, A, b, e)
         result = model.simplex()
-        # correct_result = ...
-        # if result:
-        #     print("Decision variables (x*):", result[:-len(A)])  # excluding slack variables
-        #     print("Maximum value of the objective function: ", result[-1]) # z
-
-        #     if correct_result[i] == result:
-        #         print("Test passed!")
-        #     else:
-        #         print("Test failed!")
-        #         print(f"Expected: {correct_result[i]}")
-        # else:
-        #     print("The method is not applicable!")
-        # print(result)
+        
         x1, x2, x3, ans = 0,0,0,0
         e = len(str(e).split(".")[1])
         if result:
