@@ -2,8 +2,8 @@ import numpy as np
 from Simplex_Method import *
 
 def primal_dual_interior_point(C, A, b, x0, e, alpha):
-    A = np.array(A)
-    x0 = np.array(x0)
+    A = np.array(A, float)
+    x0 = np.array(x0, float)
     m, n = A.shape
 
     # Check if dimensions match
@@ -15,12 +15,12 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
     s = np.ones(n)
     y = np.zeros(m)
 
-    max_iter = 1000
+    max_iter = 5000
     tol = e
     mu = (x @ s) / n
 
     for k in range(max_iter):
-        # Compute residuals
+        # # Compute residuals
         r_b = A @ x - b
         r_c = A.T @ y + s - C
         r_mu = x * s
@@ -30,7 +30,7 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
             break
 
         # Form the KKT matrix
-        diag_x_inv = np.diag(1 / x)
+        diag_x_inv = np.diag(x)
         diag_s = np.diag(s)
         M = A @ diag_x_inv @ diag_s @ A.T
 
@@ -60,6 +60,25 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
         s += alpha_dual * delta_s
 
         mu = (x @ s) / n
+
+        # v = x
+        # D = np.diag(x)
+        # AA = np.dot(A,D)
+        # cc = np.dot(D, C)
+        # I = np.eye(n)
+        # F = np.dot(AA, np.transpose(AA))
+        # try:
+        #     FI = np.linalg.inv(F)
+        # except np.linalg.LinAlgError:
+        #     print("The problem does not have solution!")
+        #     return None, None
+        # H = np.dot(np.transpose(AA), FI)
+        # P = np.subtract(I, np.dot(H, AA))
+        # cp = np.dot(P, cc)
+        # nu = np.absolute(np.min(cp))
+        # y = np.add(np.ones(n, float), ( alpha /nu ) * cp )
+        # yy = np.dot(D, y)
+        # x = yy
 
     # Check if solution is found
     if k == max_iter - 1:
