@@ -23,13 +23,15 @@ def test_cases():
         alpha = 0.5
         x, z = primal_dual_interior_point(C, A, b, x0, e, alpha)
         # print(f"A vector of decision variables - ({round(x1, e)}, {round(x2, e)}, {round(x3, e)}).")  # excluding slack variables
-        print(f"A vector of decision variables - ({x}).")
-        print(f"Maximum value of the objective function: {round(z, e)}.") # z
+        if (x is not None):
+            print(f"A vector of decision variables - ({x}).")
+            print(f"Maximum value of the objective function: {round(z, e)}.") # z
 
         alpha = 0.9
         x, z = primal_dual_interior_point(C, A, b, x0, e, alpha)
-        print(f"A vector of decision variables - ({x}).")
-        print(f"Maximum value of the objective function: {round(z, e)}.") # z
+        if (x is not None):
+            print(f"A vector of decision variables - ({x}).")
+            print(f"Maximum value of the objective function: {round(z, e)}.") # z
         
         # Simplex method
         model = Simplex(C, A, b, e)

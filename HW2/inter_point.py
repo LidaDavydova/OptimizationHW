@@ -2,6 +2,8 @@ import numpy as np
 from Simplex_Method import *
 
 def primal_dual_interior_point(C, A, b, x0, e, alpha):
+    A = np.array(A)
+    x0 = np.array(x0)
     m, n = A.shape
 
     # Check if dimensions match
