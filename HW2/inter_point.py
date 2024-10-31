@@ -1,9 +1,5 @@
 import numpy as np
-
-import sys
-sys.path.append('../')
-
-from HW1.validation import validate_input
+from Simplex_Method import *
 
 def primal_dual_interior_point(C, A, b, x0, e, alpha):
     m, n = A.shape

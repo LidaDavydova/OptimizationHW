@@ -1,7 +1,4 @@
-import sys
-sys.path.append('../')
-from ..HW1.SimplexMethod import Simplex
-from ..HW1.validation import validate_input
+from Simplex_Method import *
 from inter_point import primal_dual_interior_point
 
 def test_cases():
