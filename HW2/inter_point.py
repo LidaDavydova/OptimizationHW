@@ -1,5 +1,7 @@
 import numpy as np
 
+from ..HW1.validation import validate_input
+
 def primal_dual_interior_point(C, A, b, x0, e, alpha):
     m, n = A.shape
 
@@ -12,7 +14,7 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
     s = np.ones(n)
     y = np.zeros(m)
 
-    max_iter = 100
+    max_iter = 1000
     tol = e
     mu = (x @ s) / n
 
@@ -69,6 +71,7 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
     return x, obj_value
 
 def main():
+    num_of_decision_var = 3
     # Input data
     print("Enter the coefficients of the objective function (C):")
     C = np.array(list(map(float, input().split())))
@@ -103,17 +106,21 @@ def main():
     print("Enter the approximation accuracy (e):")
     e = float(input())
 
+    if not validate_input(C, A, b, e, num_of_decision_var):
+        print("The method is not applicable!")
+
     # Run for alpha = 0.5
     alpha = 0.5
-    print(f"\nRunning Interior-Point Algorithm with alpha = {alpha}...")
-    x_star_05, obj_value_05 = primal_dual_interior_point(C, A, b, x0, e, alpha)
-    if x_star_05 is not None:
-        print(f"Optimal decision variables x* (alpha = {alpha}): {x_star_05}")
-        print(f"Optimal objective function value (alpha = {alpha}): {obj_value_05}")
+    x, z = primal_dual_interior_point(C, A, b, x0, e, alpha)
+    if x is not None:
+        print(f"A vector of decision variables (alpha = {alpha}): {x}")
+        print(f"Maximum value of the objective function (alpha = {alpha}): {z}")
 
     # Run for alpha = 0.9
     alpha = 0.9
-    print(f"\nRunning Interior-Point Algorithm with alpha = {alpha}...")
-    x_star_09, obj_value_09 = primal_dual_interior_point(C, A, b, x0, e, alpha)
-    if x_star_09 is not None:
-        print(f"Optimal decision variables x* (alpha = {alpha}): {x_star_09}")
+    x, z = primal_dual_interior_point(C, A, b, x0, e, alpha)
+    if x is not None:
+        print(f"A vector of decision variables (alpha = {alpha}): {x}")
+        print(f"Maximum value of the objective function (alpha = {alpha}): {z}")
+
+    
