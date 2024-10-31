@@ -1,6 +1,9 @@
 import numpy as np
 
-from ..HW1.validation import validate_input
+import sys
+sys.path.append('../')
+
+from HW1.validation import validate_input
 
 def primal_dual_interior_point(C, A, b, x0, e, alpha):
     m, n = A.shape
@@ -71,15 +74,13 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
     return x, obj_value
 
 def main():
-    num_of_decision_var = 3
     # Input data
-    print("Enter the coefficients of the objective function (C):")
+    print("Enter the coefficients of the objective function (number of variables is 3):")
     C = np.array(list(map(float, input().split())))
 
-    print("Enter the number of constraints (m) and variables (n):")
-    m, n = map(int, input().split())
+    m, n = 3, 3
 
-    print("Enter the coefficients of the constraint matrix (A) (row-wise):")
+    print("Enter the coefficients of the constraint matrix row-wise (number of constrains is 3):")
     A_elements = []
     for _ in range(m):
         row = list(map(float, input().split()))
@@ -105,9 +106,6 @@ def main():
 
     print("Enter the approximation accuracy (e):")
     e = float(input())
-
-    if not validate_input(C, A, b, e, num_of_decision_var):
-        print("The method is not applicable!")
 
     # Run for alpha = 0.5
     alpha = 0.5
