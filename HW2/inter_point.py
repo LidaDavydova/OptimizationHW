@@ -3,6 +3,11 @@ from Simplex_Method import *
 
 def primal_dual_interior_point(C, A, b, x0, e, alpha):
     A = np.array(A, float)
+    C = np.array(C, float)
+    m0, n0 = A.shape
+    A = np.hstack((A, np.eye(m0)))
+    C = np.hstack((C, np.zeros((1,m0), float)[0]))
+
     x0 = np.array(x0, float)
     m, n = A.shape
 
@@ -12,73 +17,32 @@ def primal_dual_interior_point(C, A, b, x0, e, alpha):
         return None, None
 
     x = x0.copy()
-    s = np.ones(n)
-    y = np.zeros(m)
 
     max_iter = 5000
-    tol = e
-    mu = (x @ s) / n
 
     for k in range(max_iter):
-        # # Compute residuals
-        r_b = A @ x - b
-        r_c = A.T @ y + s - C
-        r_mu = x * s
-
-        # Stopping condition
-        if np.linalg.norm(r_b) <= tol and np.linalg.norm(r_c) <= tol and mu <= tol:
-            break
-
-        # Form the KKT matrix
-        diag_x_inv = np.diag(x)
-        diag_s = np.diag(s)
-        M = A @ diag_x_inv @ diag_s @ A.T
-
-        # Right-hand side
-        r = -r_b + A @ diag_x_inv @ (alpha * mu * np.ones(n) - r_mu)
-
-        # Solve for Δy
+        v = x
+        D = np.diag(x)
+        AA = np.dot(A,D)
+        cc = np.dot(D, C)
+        I = np.eye(n)
+        F = np.dot(AA, np.transpose(AA))
         try:
-            delta_y = np.linalg.solve(M, r)
+            FI = np.linalg.inv(F)
         except np.linalg.LinAlgError:
             print("The problem does not have solution!")
             return None, None
+        H = np.dot(np.transpose(AA), FI)
+        P = np.subtract(I, np.dot(H, AA))
+        cp = np.dot(P, cc)
+        nu = np.absolute(np.min(cp))
+        y = np.add(np.ones(n, float), ( alpha /nu ) * cp )
+        yy = np.dot(D, y)
+        x = yy
+        # print(x)
 
-        # Solve for Δx and Δs
-        delta_x = -diag_x_inv @ (A.T @ delta_y + s - C)
-        delta_s = -r_c - A.T @ delta_y
-
-        # Compute step sizes
-        idx_x_neg = delta_x < 0
-        idx_s_neg = delta_s < 0
-        alpha_primal = min(1, alpha * min((-x[idx_x_neg] / delta_x[idx_x_neg]).min(), 1) if idx_x_neg.any() else 1)
-        alpha_dual = min(1, alpha * min((-s[idx_s_neg] / delta_s[idx_s_neg]).min(), 1) if idx_s_neg.any() else 1)
-
-        # Update variables
-        x += alpha_primal * delta_x
-        y += alpha_dual * delta_y
-        s += alpha_dual * delta_s
-
-        mu = (x @ s) / n
-
-        # v = x
-        # D = np.diag(x)
-        # AA = np.dot(A,D)
-        # cc = np.dot(D, C)
-        # I = np.eye(n)
-        # F = np.dot(AA, np.transpose(AA))
-        # try:
-        #     FI = np.linalg.inv(F)
-        # except np.linalg.LinAlgError:
-        #     print("The problem does not have solution!")
-        #     return None, None
-        # H = np.dot(np.transpose(AA), FI)
-        # P = np.subtract(I, np.dot(H, AA))
-        # cp = np.dot(P, cc)
-        # nu = np.absolute(np.min(cp))
-        # y = np.add(np.ones(n, float), ( alpha /nu ) * cp )
-        # yy = np.dot(D, y)
-        # x = yy
+        if np.linalg.norm(np.subtract(yy, v), ord=2) < e:
+            break
 
     # Check if solution is found
     if k == max_iter - 1:

@@ -40,14 +40,6 @@ class Simplex:
         mn = float('inf')
         
         for i in range(len(A)):
-            # try:
-            #     b[i] /= A[i][col_i]
-            # except ZeroDivisionError:
-            #     b[i] = -1
-            # if b[i] > 0 and (mn == -1 or b[i] < mn):
-            #     mn = b[i]
-            #     mn_i = i
-
             if A[i][col_i] > self.e:
                 ratio = b[i] / A[i][col_i]
                 if ratio < mn - self.e: 
@@ -102,8 +94,6 @@ class Simplex:
             self.solution[i][1] = self.M[i][-1]
         self.solution.append(['ans', self.M[0][-1]])
         
-        # res = [row[-1] for row in self.M]
-        # return res # solution column
         return self.solution 
     
     
