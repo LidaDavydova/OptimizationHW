@@ -64,4 +64,4 @@ def test_cases():
             print("The method is not applicable!")
         
 if __name__ == '__main__':
-    test_cases()  # Uncomment this line for running test cases
+    test_cases() 
