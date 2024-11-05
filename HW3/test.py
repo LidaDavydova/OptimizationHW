@@ -11,9 +11,9 @@ def test_cases():
         print(f"\nTest Case {i + 1}:")
         print_problem(S, C, D)
 
-        print('By North West method:', north_west(S, C, D))
+        print('By North West method:\n', north_west(S, C, D))
 
-        print('By Vogel aproximation:', vogels_approximation(S, C, D))
+        print('By Vogel aproximation:\n=', vogels_approximation(S, C, D))
 
         # print(russell_approximation(S, C, D))
 

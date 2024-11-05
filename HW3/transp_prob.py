@@ -37,11 +37,7 @@ def north_west(S2, C2, D2):
             S[i] -= x
             D[j] -= x
 
-    sum_cost = 0
-    for i in range(m):
-        for j in range(n):
-            sum_cost += cost[i][j] * C[i][j]
-    return sum_cost
+    return cost
 
 def vogels_approximation(S2, C2, D2):
     C = [[C2[i][j] for j in range(len(C2[0]))] for i in range(len(C2))] 
