@@ -36,7 +36,12 @@ def north_west(S2, C2, D2):
             cost[i][j] = x
             S[i] -= x
             D[j] -= x
-    return cost    
+
+    sum_cost = 0
+    for i in range(m):
+        for j in range(n):
+            sum_cost += cost[i][j] * C[i][j]
+    return sum_cost
 
 def vogels_approximation(S2, C2, D2):
     C = [[C2[i][j] for j in range(len(C2[0]))] for i in range(len(C2))] 
@@ -44,8 +49,7 @@ def vogels_approximation(S2, C2, D2):
     S = [S2[i] for i in range(len(S2))]
     m, n = len(C), len(C[0])
     cost = np.zeros((m, n))
-    mx = 0
-
+    
     while sum(S) > 0 and sum(D) > 0:
         penalties = []
 
@@ -79,8 +83,6 @@ def vogels_approximation(S2, C2, D2):
         cost[i][j] = x
         S[i] -= x
         D[j] -= x
-
-        mx+=1
 
     return cost
 
