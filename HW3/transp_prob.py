@@ -40,12 +40,12 @@ def north_west(S2, C2, D2):
     return cost
 
 def vogels_approximation(S2, C2, D2):
-    C = [[C2[i][j] for j in range(len(C2[0]))] for i in range(len(C2))] 
+    C = [[C2[i][j] for j in range(len(C2[0]))] for i in range(len(C2))]
     D = [D2[j] for j in range(len(D2))]
     S = [S2[i] for i in range(len(S2))]
     m, n = len(C), len(C[0])
     cost = np.zeros((m, n))
-    
+
     while sum(S) > 0 and sum(D) > 0:
         penalties = []
 
@@ -64,7 +64,7 @@ def vogels_approximation(S2, C2, D2):
                 penalties.append((row[0], 'row', i))
 
         penalty = max(penalties)
-        
+
         if penalty[1] == 'row':
             i = penalty[2]
             j = min((j for j in range(n) if D[j] > 0), key=lambda j: C[i][j])
@@ -82,53 +82,42 @@ def vogels_approximation(S2, C2, D2):
 
     return cost
 
-# print(vogels_approximation([140,180,160], [[2,3,4,2,4], [8,4,1,4,1], [9,7,3,7,2]], [60,70,120,130,100]))
 
-def russell_approximation(S, C, D):
-    m = len(S)
-    n = len(D)
-    total_supply = sum(S)
-    total_demand = sum(D)
 
-    if total_supply != total_demand:
-        raise ValueError("Total supply must equal total demand")
+def russell_approximation(S2, C2, D2):
+    S = [S2[i] for i in range(len(S2))]
+    D = [D2[j] for j in range(len(D2))]
+    C = [[C2[i][j] for j in range(len(C2[0]))] for i in range(len(C2))]
+    m, n = len(C), len(C[0])
+    allocation = np.zeros((m, n))
 
-    # Initialize allocation matrix
-    allocation = [[0] * n for _ in range(m)]
+    def calculate_penalties():
+        penalties = [[0] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if S[i] > 0 and D[j] > 0:
+                    row_max = max(C[i])
+                    col_max = max(C[k][j] for k in range(m))
+                    penalties[i][j] = C[i][j] - (row_max + col_max)
+        return penalties
 
-    # Calculate penalties
-    penalties = [[0] * n for _ in range(m)]
-    for i in range(m):
-        for j in range(n):
-            row_min = min(C[i][k] for k in range(n) if k != j)
-            col_min = min(C[k][j] for k in range(m) if k != i)
-            penalties[i][j] = C[i][j] - row_min - col_min
+    penalties = calculate_penalties()
 
     while sum(S) > 0 and sum(D) > 0:
-        # Find the cell with the highest penalty
-        max_penalty = -1
-        max_i = -1
-        max_j = -1
+        max_penalty = -float('inf')
+        max_i, max_j = -1, -1
         for i in range(m):
             for j in range(n):
                 if S[i] > 0 and D[j] > 0 and penalties[i][j] > max_penalty:
                     max_penalty = penalties[i][j]
-                    max_i = i
-                    max_j = j
+                    max_i, max_j = i, j
 
-        # Allocate as much as possible to the cell with the highest penalty
-        allocation_amount = min(S[max_i], D[max_j])
-        allocation[max_i][max_j] = allocation_amount
-        S[max_i] -= allocation_amount
-        D[max_j] -= allocation_amount
+        x = min(S[max_i], D[max_j])
+        allocation[max_i][max_j] = x
+        S[max_i] -= x
+        D[max_j] -= x
 
-        # Recalculate penalties
-        for i in range(m):
-            for j in range(n):
-                if S[i] > 0 and D[j] > 0:
-                    row_min = min(C[i][k] for k in range(n) if k != j)
-                    col_min = min(C[k][j] for k in range(m) if k != i)
-                    penalties[i][j] = C[i][j] - row_min - col_min
+        penalties = calculate_penalties()
 
     return allocation
 
